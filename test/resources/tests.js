@@ -32,3 +32,34 @@ test("check math", function() {
         }
     }
 });
+
+test("check final", function() {
+    var z = new MultProb(3);
+    z.setProb(123, 45); // 123 * 45 = 5535
+    z.showNewProblem();
+    ok(z.isValidFinal() === false ,"finds wrong");
+    z.finalRow = [5,3,5,5,0];
+    ok(z.isValidFinal() === true ,"finds correct");
+    z.finalRow = [1,3,5,5,4];
+    var expectedMatch = [false,true,true,true,false];
+    for (var i=1; i<z.width; i++){
+        ok(z.isValidFinalCell(i) === expectedMatch[i], "digit-wise");
+    }
+});
+/*test("add num to working area", function() {
+    var z = new MultProb(3);
+    z.showNewProblem();
+    // test one num addition to work area
+    var expectedProgress = [
+        [0,1,0,0,0,0],
+        [0,0,0,0,0,0],
+        [0,0,0,0,0,0],
+    ];
+    $(document).ready(function() {
+        $("td.workitem[posx='0'][posy='1']").click();
+        $(".numchoices td[tabindex='0']").click();
+        //deepEqual(z.progressRows, expectedProgress, "set one value");
+        var actual = $("td.workitem[posx='0'][posy='1']").html();
+        deepEqual(actual, "1", "one appears");
+    });
+});*/

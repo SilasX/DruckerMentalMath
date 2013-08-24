@@ -89,6 +89,20 @@ function MultProb(size) {
         return curVal === shouldBe;
     }
 
+    this.isValidFinalCell = function(pos) {
+        var curVal = this.finalRow[pos];
+        // calculate correct final answer
+        // pick out correct position of correct answer
+        var finalAns = to_integer(this.topRow) * to_integer(this.bottomRow);
+        var shouldBe = Math.floor(finalAns/Math.pow(10,pos)) % 10;
+        return curVal === shouldBe;
+    }
+
+    this.isValidFinal = function() {
+        var shouldBe = to_integer(this.topRow) * to_integer(this.bottomRow);
+        return to_integer(this.finalRow) == shouldBe;
+    }
+
     this.addDividerBar = function(spaces, selector) {
         $(selector).append('<tr class="bar"></tr>');
         for (var i = 0; i < spaces; i++) {
