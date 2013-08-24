@@ -6,6 +6,7 @@ function MultProb(size) {
     this.topRow = new Array();
     this.bottomRow = new Array();
     this.progressRows = new Array();
+    this.finalRow = new Array();
 
     this.randomizeProblem = function() {
         for (var i = 0; i < size; i++) {
@@ -135,6 +136,22 @@ function MultProb(size) {
         this.addDividerBar(this.width, mp_string);
     }
 
+    this.resetFinal = function() {
+        var tabIndVal = 0;
+        var mp_final = 'table.finalanswer';
+        $(mp_final).empty();
+        // reset model
+        this.finalRow = [];
+        for (var i=this.width-1; i>=0; i--) {
+            // build up model with 0s
+            this.finalRow.push(0);
+            // fill in view
+            var attrStr = ' pos="' + i + '" tabindex="' + tabIndVal + '" class="finalitem"';
+            tabIndVal++;
+            $(mp_final).append('<td' + attrStr + '> </td>');
+        }
+    };
+
     this.resetWorkDisplay = function() {
         var tabIndVal = 0;
         var mp_work = 'table.workarea';
@@ -195,14 +212,17 @@ function MultProb(size) {
         }
         // set up working area
         this.resetWorkDisplay();
+        // set up final answer area
+        this.resetFinal();
     };
 }
 
-// handle click in in the work area
+// handle click in in the work or final area
 var workClick = function() {
-    $(".workarea td").click(function() {
-    // clear all selected
-        $(".workarea td").removeClass("selected");
+    var writeSelector = ".workarea td, .finalanswer td";
+    $(writeSelector).click(function() {
+        // clear all selected
+        $(writeSelector).removeClass("selected");
         // make this one selected
         $(this).addClass("selected");
     });
@@ -214,13 +234,20 @@ var choiceClick = function() {
         // add to view
         if ($(this).attr("tabindex") !== undefined) {
             var chosenNum = $(this).html();
-            $(".workarea td.selected").html(chosenNum);
+            $("td.selected").html(chosenNum);
         }
-        // add to model
+        // add to model, depend on whether work or final
+        // only one item should be selected
+        $(".workarea .selected")
         var posx = $(".workarea td.selected").attr("posx");
         var posy = $(".workarea td.selected").attr("posy");
-        prob.setWorkDigit(posx, posy, chosenNum);
-        prob.isValidWork(posx, posy);
+        var pos = $(".finalanswer td.selected").attr("pos");
+        if (posx !== undefined) { // if it found a workarea selected
+            prob.setWorkDigit(posx, posy, chosenNum);
+        }
+        if (pos !== undefined) { // if it found final row selected
+            prob.finalRow[parseInt(pos, 10)] = parseInt(chosenNum,10);
+        }
     });
 };
 
