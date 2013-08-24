@@ -2,22 +2,27 @@ function MultProb(size) {
     this.size = size;
     this.topSize = size;
     this.bottomSize = size;
-    this.width = 2*size
+    this.width = 2*size;
     this.topRow = new Array();
     this.bottomRow = new Array();
     this.progressRows = new Array();
-    for (var i = 0; i < size; i++) {
-        if (i === size - 1) {
-            // can't be zero; only 1-9
-            this.topRow[i] = Math.floor(Math.random()*9 + 1);
-            this.bottomRow[i] = Math.floor(Math.random()*9 + 1);
+
+    this.randomizeProblem = function() {
+        for (var i = 0; i < size; i++) {
+            if (i === size - 1) {
+                // can't be zero; only 1-9
+                this.topRow[i] = Math.floor(Math.random()*9 + 1);
+                this.bottomRow[i] = Math.floor(Math.random()*9 + 1);
+            }
+            else {
+                this.topRow[i] = Math.floor(Math.random()*10);
+                this.bottomRow[i] = Math.floor(Math.random()*10);
+            }
         }
-        else {
-            this.topRow[i] = Math.floor(Math.random()*10);
-            this.bottomRow[i] = Math.floor(Math.random()*10);
-        }
-    }
-    
+    };
+
+    this.randomizeProblem();
+
     // set the initial problem
     this.setProb = function(topNum, bottomNum) {
         this.topRow = to_array(topNum);
@@ -83,11 +88,19 @@ function MultProb(size) {
         return curVal === shouldBe;
     }
 
-    this.setNewProblem = function() {
+    this.addDividerBar = function(spaces, selector) {
+        $(selector).append('<tr class="bar"></tr>');
+        for (var i = 0; i < spaces; i++) {
+            $(selector + " tr.bar").append('<td> </td>');
+        }
+    };
+
+    // overwrite given problem from model (M -> V)
+    this.resetGivensDisplay = function() {
         // fill in the problem table
         var tabIndVal = 0;
         var mp_string = "table.multprob";
-        $(mp_string).html("");
+        $(mp_string).empty();
         $(mp_string).append('<tr class="toprow"></tr>');
         $(mp_string).append('<tr class="bottomrow"></tr>');
         for (var i = this.width - 1; i >= 0; i--) {
@@ -119,13 +132,39 @@ function MultProb(size) {
             $("tr.bottomrow").append('<td ' + posStr + givenStr + '>' + bottomChar + '</td>');
         }
         // append the divider bar
-        $(mp_string).append('<tr class="bar"></tr>');
-        for (var i = this.width - 1; i >= 0; i--) {
-            $("tr.bar").append('<td> </td>');
+        this.addDividerBar(this.width, mp_string);
+    }
+
+    this.resetWorkDisplay = function() {
+        var tabIndVal = 0;
+        var mp_work = 'table.workarea';
+        $(mp_work).empty();
+        for (var i = 0; i < this.bottomSize; i++){
+            // reset row model
+            this.progressRows[i] = new Array();
+            // add row view
+            $(mp_work).append('<tr></tr>');
+            for (var j = this.width - 1; j >= 0; j--) {
+                // set up item in model
+                this.progressRows[i].push(0);
+                // add item to view
+                var workStr = ' posx="' + i + '" posy="' + j + '" tabindex="' + tabIndVal  + '" class="workitem"';
+                tabIndVal++;
+                $(mp_work + " tr").last().append(
+                    '<td' + workStr + '> </td>'
+                );
+            }
         }
-        
+        this.addDividerBar(this.width, mp_work);
+    };
+
+    // render new problem from model
+    this.showNewProblem = function() {
+        this.resetGivensDisplay();
+        var tabIndVal = 0;
         // put the choices to the side
         var mp_choices = "table.numchoices";
+        $(mp_choices).empty();
         for (var i = 0; i <= 3; i++) {
             $(mp_choices).append('<tr></tr>');
             for (var j = 1; j <= 3; j++) {
@@ -155,43 +194,22 @@ function MultProb(size) {
             }
         }
         // set up working area
-        var mp_work = 'table.workarea';
-        for (var i = 0; i < this.bottomSize; i++){
-            // add row model
-            this.progressRows[i] = new Array();
-            // add row view
-            $(mp_work).append('<tr></tr>');
-            for (var j = this.width - 1; j >= 0; j--) {
-                // set up item in model
-                this.progressRows[i].push(0);
-                // add item to view
-                var workStr = ' posx="' + i + '" posy="' + j + '" tabindex="' + tabIndVal  + '" class="workitem"';
-                tabIndVal++;
-                $(mp_work + " tr").last().append(
-                    '<td' + workStr + '> </td>'
-                );
-            }
-        }
+        this.resetWorkDisplay();
     };
 }
 
-
-$(document).ready(function() {
-    // initialize TGame object
-    prob = new MultProb(3);
-    prob.setProb(123, 45);
-    prob.setNewProblem();
-    // event handlers
-    
-    // handle click in in the work area
+// handle click in in the work area
+var workClick = function() {
     $(".workarea td").click(function() {
-        // clear all selected
+    // clear all selected
         $(".workarea td").removeClass("selected");
         // make this one selected
         $(this).addClass("selected");
     });
+};
 
-    // handle choice of number
+// handle choice of number
+var choiceClick = function() {
     $(".numchoices td").click(function() {
         // add to view
         if ($(this).attr("tabindex") !== undefined) {
@@ -204,4 +222,24 @@ $(document).ready(function() {
         prob.setWorkDigit(posx, posy, chosenNum);
         prob.isValidWork(posx, posy);
     });
+};
+
+var setHandlers = function() {
+    workClick();
+    choiceClick();
+};
+
+$(document).ready(function() {
+    // initialize TGame object
+    prob = new MultProb(3);
+    //prob.setProb(123, 45);
+    prob.randomizeProblem();
+    prob.showNewProblem();
+    // event handlers
+    $("button.reset").click(function() {
+        prob.randomizeProblem();
+        prob.showNewProblem();
+        setHandlers();
+    });
+    setHandlers();
 });

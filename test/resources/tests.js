@@ -19,7 +19,7 @@ test("check math", function() {
         [true,true,true,false,true]
     ];
     z.setProb(123, 45); //4920
-    z.setNewProblem();
+    z.showNewProblem();
     z.setWorkRow(0, 635);
     z.setWorkRow(1, 3920);
     deepEqual(z.progressRows[0], expectedWork[0], "set progress row 0");
