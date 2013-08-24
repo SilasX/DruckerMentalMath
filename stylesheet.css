@@ -78,3 +78,7 @@ td.workitem, td.finalitem {
     border:2px solid black;
 }
 
+.error {
+    color: red;
+    font-weight: bold;
+}

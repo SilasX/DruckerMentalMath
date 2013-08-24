@@ -252,15 +252,28 @@ var choiceClick = function() {
         }
         // add to model, depend on whether work or final
         // only one item should be selected
-        $(".workarea .selected")
-        var posx = $(".workarea td.selected").attr("posx");
-        var posy = $(".workarea td.selected").attr("posy");
-        var pos = $(".finalanswer td.selected").attr("pos");
+        var workSel = ".workarea td.selected"; // work area selector
+        var finalSel = ".finalanswer td.selected"; // final area selector
+        var errorStr = "error"; // error class string
+        var posx = $(workSel).attr("posx");
+        var posy = $(workSel).attr("posy");
+        var pos = $(finalSel).attr("pos");
         if (posx !== undefined) { // if it found a workarea selected
             prob.setWorkDigit(posx, posy, chosenNum);
+            // add or remove error class
+            if (prob.isValidWork(posx, posy)) {
+                $(workSel).removeClass(errorStr);
+            } else {
+                $(workSel).addClass(errorStr);
+            }
         }
         if (pos !== undefined) { // if it found final row selected
             prob.finalRow[parseInt(pos, 10)] = parseInt(chosenNum,10);
+            if (prob.isValidFinalCell(pos)) {
+                $(finalSel).removeClass(errorStr);
+            } else {
+                $(finalSel).addClass(errorStr);
+            }
         }
     });
 };
