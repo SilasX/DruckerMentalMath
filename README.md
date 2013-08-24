@@ -1,10 +1,10 @@
 #### The "Drucker-Flickr" Method for multiplying large numbers.
 
-My implementation of [Andy Drucker's method](http://people.csail.mit.edu/andyd/rec_method.pdf) for multiplying large numbers without writing writing anything down.  See [Scott Aarsonon's post](http://www.scottaaronson.com/blog/?p=728) for its significance in computational complexity.
+My implementation of [Andy Drucker's method](http://people.csail.mit.edu/andyd/rec_method.pdf) for multiplying large numbers without writing writing anything down (as an intermediate step anyway).  See [Scott Aarsonon's post](http://www.scottaaronson.com/blog/?p=728) for its significance in computational complexity.
 
 The key trick behind it is this: if you have seen a picture before, you can remember *that* you have seen it, and distinguish it from ones you haven't seen.  So here's what you do:
 
-1) Reserve (without looking at them) ten random pictures corresponding to digits 0-9
+1) Reserve (without looking at them) ten random pictures corresponding to digits 0-9.
 
 2) Look at (only!) the one corresponding to the digit you want to "write down".
 
@@ -18,7 +18,7 @@ Clone the repo and open `index.html` in your favorite browser.
 
 #### Tests
 
-The test suite can be run simply by opening test/qunit.html, which uses the [QUnit]() testing framework.
+The test suite can be run simply by opening `test/qunit.html`, which uses the [QUnit](http://qunitjs.com/) testing framework.
 
 #### Usage
 
