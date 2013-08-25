@@ -9,9 +9,11 @@ function MultProb(size) {
     this.finalRow = new Array();
     this.CHOOSE_WORK_MSG = "Click on a box to select a place";
     this.CHOOSE_DIGIT_MSG = "Now click on a digit from the pad to the right";
-    this.ERROR_MSG = "Uh oh!  One of your digits is wrong!"
+    this.ERROR_MSG = "Uh oh! One of your digits is wrong!"
     this.STAT_MSG_SELECTOR = "div.statsmsg";
     this.ERROR_SELECTOR = "div.errormsg";
+    this.VIC_MSG_SELECTOR = "div.victorymsg";
+    this.VICTORY_MSG = "You win! You can do basic math!"
 
     this.randomizeProblem = function() {
         for (var i = 0; i < size; i++) {
@@ -234,7 +236,10 @@ function MultProb(size) {
         this.resetWorkDisplay();
         // set up final answer area
         this.resetFinal();
+        // initialize messages
         $(prob.STAT_MSG_SELECTOR).html(prob.CHOOSE_WORK_MSG);
+        $(prob.ERROR_SELECTOR).empty();
+        $(prob.VIC_MSG_SELECTOR).empty();
     };
 }
 
@@ -282,10 +287,15 @@ var choiceClick = function() {
             prob.finalRow[parseInt(pos, 10)] = parseInt(chosenNum,10);
             if (prob.isValidFinalCell(pos)) {
                 $(finalSel).removeClass(errorStr);
-                $(prob.ERROR_SELECTOR).empty()
+                $(prob.ERROR_SELECTOR).empty();
+                // check for victory
+                if (prob.isValidFinal()) {
+                    $(prob.VIC_MSG_SELECTOR).html(prob.VICTORY_MSG);
+                }
             } else {
                 $(finalSel).addClass(errorStr);
                 $(prob.ERROR_SELECTOR).html(prob.ERROR_MSG);
+                $(prob.VIC_MSG_SELECTOR).empty();
             }
         }
     });

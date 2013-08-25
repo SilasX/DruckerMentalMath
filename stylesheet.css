@@ -16,11 +16,17 @@ table.numchoices, table.workarea {
     display: inline-block;
 }
 
-.statsmsg, .errormsg {
+.statsmsg, .errormsg, .victorymsg {
     font-size: 20px;
     font-family: arial, sans-serif;
     vertical-align: middle;
     display: block;
+}
+
+.victorymsg {
+    color: green;
+    background-color: yellow;
+    font-weight: bold;
 }
 
 .errormsg {
