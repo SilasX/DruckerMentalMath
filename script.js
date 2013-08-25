@@ -7,6 +7,11 @@ function MultProb(size) {
     this.bottomRow = new Array();
     this.progressRows = new Array();
     this.finalRow = new Array();
+    this.CHOOSE_WORK_MSG = "Click on a box to select a place";
+    this.CHOOSE_DIGIT_MSG = "Now click on a digit from the pad to the right";
+    this.ERROR_MSG = "Uh oh!  One of your digits is wrong!"
+    this.STAT_MSG_SELECTOR = "div.statsmsg";
+    this.ERROR_SELECTOR = "div.errormsg";
 
     this.randomizeProblem = function() {
         for (var i = 0; i < size; i++) {
@@ -229,7 +234,7 @@ function MultProb(size) {
         this.resetWorkDisplay();
         // set up final answer area
         this.resetFinal();
-        $("div.statsmsg").html("Click on a box to select a place");
+        $(prob.STAT_MSG_SELECTOR).html(prob.CHOOSE_WORK_MSG);
     };
 }
 
@@ -241,6 +246,7 @@ var workClick = function() {
         $(writeSelector).removeClass("selected");
         // make this one selected
         $(this).addClass("selected");
+        $(prob.STAT_MSG_SELECTOR).html(prob.CHOOSE_DIGIT_MSG);
     });
 };
 
@@ -265,16 +271,21 @@ var choiceClick = function() {
             // add or remove error class
             if (prob.isValidWork(posx, posy)) {
                 $(workSel).removeClass(errorStr);
+                $(prob.ERROR_SELECTOR).empty()
             } else {
+                console.log("got a wrong digit");
                 $(workSel).addClass(errorStr);
+                $(prob.ERROR_SELECTOR).html(prob.ERROR_MSG);
             }
         }
         if (pos !== undefined) { // if it found final row selected
             prob.finalRow[parseInt(pos, 10)] = parseInt(chosenNum,10);
             if (prob.isValidFinalCell(pos)) {
                 $(finalSel).removeClass(errorStr);
+                $(prob.ERROR_SELECTOR).empty()
             } else {
                 $(finalSel).addClass(errorStr);
+                $(prob.ERROR_SELECTOR).html(prob.ERROR_MSG);
             }
         }
     });

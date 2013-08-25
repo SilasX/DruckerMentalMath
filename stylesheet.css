@@ -16,11 +16,15 @@ table.numchoices, table.workarea {
     display: inline-block;
 }
 
-div.statsmsg {
+.statsmsg, .errormsg {
     font-size: 20px;
     font-family: arial, sans-serif;
     vertical-align: middle;
     display: block;
+}
+
+.errormsg {
+    color: red;
 }
 
 table.numchoices td {

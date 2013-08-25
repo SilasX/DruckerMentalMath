@@ -5,6 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 
 DEBUG_BUTTON_SELECTOR = "button.debug"
+ERROR_SELECTOR = "div.errormsg"
+ERROR_MSG = "Uh oh! One of your digits is wrong!"
 
 class UserInputtingNumbers(unittest.TestCase):
 
@@ -24,15 +26,20 @@ class UserInputtingNumbers(unittest.TestCase):
         choicecell.click()
         actual = workcell.text
         self.assertEqual(expected, actual)
-        # check that it has error
+        # check that it has error class
         work_classes = workcell.get_attribute("class")
         self.assertIn("error", work_classes)
+        # check that error message shows
+        errorcell = self.css(ERROR_SELECTOR)
+        self.assertEqual(ERROR_MSG, errorcell.text)
         # then correct error by placing 1 there
         choicecell2 = self.css(".numchoices td[tabindex='0']")
         choicecell2.click()
         self.assertEqual(u'1', workcell.text)
         work_classes = workcell.get_attribute("class")
         self.assertNotIn("error", work_classes)
+        # check that error message is empty
+        self.assertEqual("", errorcell.text)
 
     def test_input_vals_after_restart(self):
         expected = u'8'
