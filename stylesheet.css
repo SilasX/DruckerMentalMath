@@ -8,8 +8,15 @@ body {
     margin-right:auto;
 }*/
 
-table.workarea, table.multprob, table.numchoices {
+table.workarea, table.multprob,table.numchoices {
     display: inline-block;
+}
+
+div.statsmsg {
+    font-size: 20px;
+    font-family: arial, sans-serif;
+    vertical-align: middle;
+    display: block;
 }
 
 table.numchoices td {

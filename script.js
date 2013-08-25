@@ -191,6 +191,7 @@ function MultProb(size) {
 
     // render new problem from model
     this.showNewProblem = function() {
+        // clear status message area
         this.resetGivensDisplay();
         var tabIndVal = 0;
         // put the choices to the side
@@ -228,6 +229,7 @@ function MultProb(size) {
         this.resetWorkDisplay();
         // set up final answer area
         this.resetFinal();
+        $("div.statsmsg").html("Click on a box to select a place");
     };
 }
 
