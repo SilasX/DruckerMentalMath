@@ -8,7 +8,11 @@ body {
     margin-right:auto;
 }*/
 
-table.workarea, table.multprob,table.numchoices {
+table.multprob {
+    display: block;
+}
+
+table.numchoices, table.workarea {
     display: inline-block;
 }
 
@@ -29,9 +33,9 @@ table.numchoices td {
 }
 
 table.multprob td, table.workarea td, table.finalanswer td {
-    width: 100px;
-    height: 100px;
-    font-size: 80px;
+    width: 60px;
+    height: 60px;
+    font-size: 48px;
     font-family: arial;
     text-align: center;
     vertical-align: middle;
@@ -40,10 +44,15 @@ table.multprob td, table.workarea td, table.finalanswer td {
 tr.bar td {
     height: 5px;
     border-bottom: 2px solid black;
+    border-radius: 0px;
 }
 
 td.selected {
     background-color: yellow;
+}
+
+td {
+    border-radius: 9px;
 }
 
 .padposition {
