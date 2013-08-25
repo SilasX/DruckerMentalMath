@@ -82,3 +82,7 @@ td.workitem, td.finalitem {
     color: red;
     font-weight: bold;
 }
+
+/*button.debug {
+    display: none;
+}*/

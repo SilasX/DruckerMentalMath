@@ -278,15 +278,23 @@ var choiceClick = function() {
     });
 };
 
+var debugClick = function() {
+    $("button.debug").click(function() {
+        prob.setProb(123, 45);
+        prob.showNewProblem();
+        setHandlers();
+    });
+}
+
 var setHandlers = function() {
     workClick();
     choiceClick();
+    debugClick();
 };
 
 $(document).ready(function() {
     // initialize TGame object
     prob = new MultProb(3);
-    //prob.setProb(123, 45);
     prob.randomizeProblem();
     prob.showNewProblem();
     // event handlers

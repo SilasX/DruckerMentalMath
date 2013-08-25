@@ -18,7 +18,12 @@ Clone the repo and open `index.html` in your favorite browser.
 
 #### Tests
 
+##### Model tests (unit tests)
 The test suite can be run simply by opening `test/qunit.html`, which uses the [QUnit](http://qunitjs.com/) testing framework.
+
+##### Interaction tests with Selenium (functional tests)
+
+Fire up a local server by running `python server.py`, then run `python functional_test.py` while that's active.
 
 #### Usage
 
