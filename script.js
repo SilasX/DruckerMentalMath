@@ -155,7 +155,19 @@ function MultProb(size) {
         }
         // append the divider bar
         this.addDividerBar(this.width, mp_string);
-    }
+    };
+
+    // helper for one-off rows
+    this.addRowWith = function(cssClass) {
+        var tabIndVal = 0;
+        var cssSelector = "table." + cssClass;
+        $(cssSelector).empty();
+        for (var i=this.width-1; i>=0; i--) {
+            var attrStr = ' pos="' + i + '" tabindex="' + tabIndVal + '" class="' + cssClass + '"';
+            tabIndVal++;
+            $(cssSelector).append('<td' + attrStr + '> </td>');
+        }
+    };
 
     this.resetFinal = function() {
         var tabIndVal = 0;
@@ -234,6 +246,8 @@ function MultProb(size) {
         }
         // set up working area
         this.resetWorkDisplay();
+        // set the carryArea
+        // this.addRowWith("workcarry")
         // set up final answer area
         this.resetFinal();
         // initialize messages

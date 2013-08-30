@@ -42,13 +42,18 @@ table.numchoices td {
     vertical-align: middle;
 }
 
-table.multprob td, table.workarea td, table.finalanswer td {
+table.multprob td, table.workarea td,
+table.finalanswer td, table.workcarry td {
     width: 60px;
     height: 60px;
     font-size: 48px;
     font-family: arial;
     text-align: center;
     vertical-align: middle;
+}
+
+table.workcarry td {
+    border-color: gray;
 }
 
 tr.bar td {
@@ -84,6 +89,10 @@ td {
 
 td.workitem, td.finalitem {
     border:2px solid black;
+}
+
+td.workcarry {
+    border: 2px solid gray;
 }
 
 .error {
