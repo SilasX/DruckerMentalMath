@@ -4,8 +4,8 @@ import unittest
 from selenium import webdriver
 
 DEBUG_BUTTON_SELECTOR = "button.debug"
-ERROR_SELECTOR = "div.errormsg"
 ERROR_MSG = "Uh oh! One of your digits is wrong!"
+LAST_MSG_SELECTOR = ".statitem:last-child"
 VIC_MSG_SELECTOR = "div.victorymsg";
 VICTORY_MSG = "You win! You can do basic math!"
 
@@ -41,16 +41,19 @@ class UserInputtingNumbers(unittest.TestCase):
         work_classes = workcell.get_attribute("class")
         self.assertIn("error", work_classes)
         # check that error message shows
-        errorcell = self.css(ERROR_SELECTOR)
-        self.assertEqual(ERROR_MSG, errorcell.text)
+        last_message = self.css(LAST_MSG_SELECTOR)
+        self.assertEqual(ERROR_MSG, last_message.text)
+        # ... and that it has errormsg class
+        msg_classes = last_message.get_attribute("class")
+        self.assertIn("errormsg", msg_classes)
         # then correct error by placing 1 there
         choicecell2 = self.css(num_selector(1))
         choicecell2.click()
         self.assertEqual(u'1', workcell.text)
         work_classes = workcell.get_attribute("class")
         self.assertNotIn("error", work_classes)
-        # check that error message is empty
-        self.assertEqual("", errorcell.text)
+        # check that last message is not error
+        # self.assertNotEqual(ERROR_MSG, last_message.text)
 
     def test_input_vals_after_restart(self):
         expected = u'8'

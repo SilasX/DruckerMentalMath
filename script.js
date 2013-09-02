@@ -11,6 +11,7 @@ function MultProb(size) {
     this.CHOOSE_DIGIT_MSG = "Now click on a digit from the pad to the right";
     this.ERROR_MSG = "Uh oh! One of your digits is wrong!"
     this.STAT_MSG_SELECTOR = "div.statsmsg";
+    this.STAT_BOX_SELECTOR = "div.statusbox";
     this.ERROR_SELECTOR = "div.errormsg";
     this.VIC_MSG_SELECTOR = "div.victorymsg";
     this.VICTORY_MSG = "You win! You can do basic math!"
@@ -95,6 +96,14 @@ function MultProb(size) {
         // then extract out the desired element
         return curVal === shouldBe;
     }
+
+    this.addMessage = function(msg, classList) {
+        $(this.STAT_BOX_SELECTOR).append("<div class='statitem'>" + msg + "</span>");
+        for (var i=0; i<classList.length; i++) {
+            $(".statitem:last-child").addClass(classList[i]);
+        }
+        $(this.STAT_BOX_SELECTOR).scrollTop($(this.STAT_BOX_SELECTOR).scrollHeight);
+    };
 
     this.isValidFinalCell = function(pos) {
         var curVal = this.finalRow[pos];
@@ -252,6 +261,7 @@ function MultProb(size) {
         this.resetFinal();
         // initialize messages
         $(prob.STAT_MSG_SELECTOR).html(prob.CHOOSE_WORK_MSG);
+        prob.addMessage(prob.CHOOSE_WORK_MSG, []);
         $(prob.ERROR_SELECTOR).empty();
         $(prob.VIC_MSG_SELECTOR).empty();
     };
@@ -266,6 +276,7 @@ var workClick = function() {
         // make this one selected
         $(this).addClass("selected");
         $(prob.STAT_MSG_SELECTOR).html(prob.CHOOSE_DIGIT_MSG);
+        prob.addMessage(prob.CHOOSE_DIGIT_MSG, []);
     });
 };
 
@@ -292,9 +303,9 @@ var choiceClick = function() {
                 $(workSel).removeClass(errorStr);
                 $(prob.ERROR_SELECTOR).empty()
             } else {
-                console.log("got a wrong digit");
                 $(workSel).addClass(errorStr);
                 $(prob.ERROR_SELECTOR).html(prob.ERROR_MSG);
+                prob.addMessage(prob.ERROR_MSG, ["errormsg"]);
             }
         }
         if (pos !== undefined) { // if it found final row selected
