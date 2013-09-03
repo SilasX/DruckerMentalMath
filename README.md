@@ -16,6 +16,10 @@ Then, it's just a matter of having a predictable mapping between a) blocks of im
 
 Clone the repo and open `index.html` in your favorite browser.
 
+#### Implementation Details
+
+This uses a pseudo-MVC design.  `script.js` instantiates a (MultProb)Controller, which uses the `setHandlers` method to listen for events, each of which calls a controller method that then makes appropriate calls to the (MultProb)Model or (MultProb)View. The Model handles internal representaiton of the multiplicaiton problem and the progress on it, while the View writes to the DOM to keep it in sync.
+
 #### Tests
 
 ##### Model tests (unit tests)

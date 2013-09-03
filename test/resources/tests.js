@@ -1,5 +1,5 @@
 test( "set problem", function() {
-    var z = new MultProb(3);
+    var z = new MultProbModel(3);
     z.setProb(123, 45);
     deepEqual(z.topRow, [3,2,1], z.topRow );
     deepEqual(z.bottomRow, [5,4], z.bottomRow);
@@ -9,7 +9,7 @@ test( "set problem", function() {
 });
 
 test("check math", function() {
-    var z = new MultProb(3);
+    var z = new MultProbModel(3);
     var expectedWork = [
         [5,3,6,0,0],
         [0,2,9,3,0]
@@ -19,7 +19,7 @@ test("check math", function() {
         [true,true,true,false,true]
     ];
     z.setProb(123, 45); //4920
-    z.showNewProblem();
+    z.resetProgress();
     z.setWorkRow(0, 635);
     z.setWorkRow(1, 3920);
     deepEqual(z.progressRows[0], expectedWork[0], "set progress row 0");
@@ -34,9 +34,9 @@ test("check math", function() {
 });
 
 test("check final", function() {
-    var z = new MultProb(3);
+    var z = new MultProbModel(3);
     z.setProb(123, 45); // 123 * 45 = 5535
-    z.showNewProblem();
+    //z.showNewProblem();
     ok(z.isValidFinal() === false ,"finds wrong");
     z.finalRow = [5,3,5,5,0];
     ok(z.isValidFinal() === true ,"finds correct");
