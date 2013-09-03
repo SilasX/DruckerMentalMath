@@ -147,7 +147,7 @@ function MultProbView() {
                 }
                 var tabStr = '';
                 if (tabNum){
-                    tabStr = ' tabindex="' + tabIndVal + '"';
+                    tabStr = ' tabindex="' + tabIndVal + '" id="num' + numStr + '"';
                 }
                 tabIndVal++;
                 // append key to last tr

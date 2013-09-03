@@ -12,11 +12,7 @@ VICTORY_MSG = "You win! You can do basic math!"
 
 def num_selector(input_num):
     """helper function for writing selector for input number """
-    if input_num > 0:
-        num_str = str(input_num - 1)
-    else:
-        num_str = "10"
-    return ".numchoices td[tabindex='" + num_str + "']"
+    return "#num" + str(input_num)
 
 
 class UserInputtingNumbers(unittest.TestCase):
