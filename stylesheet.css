@@ -20,14 +20,14 @@ div.statusbox {
     font-family: arial, sans-serif;
 }
 
-table.numchoices, table.workarea {
+table.numchoices, table.workarea, div.picview {
     display: inline-block;
 }
 
 .statsmsg, .errormsg, .victorymsg {
     font-size: 20px;
     font-family: arial, sans-serif;
-    vertical-align: middle;
+    /*vertical-align: middle;*/
     display: block;
 }
 
@@ -106,6 +106,10 @@ td.workcarry {
 .error {
     color: red;
     font-weight: bold;
+}
+
+button.getpics {
+    display: inline;
 }
 
 /*button.debug {
