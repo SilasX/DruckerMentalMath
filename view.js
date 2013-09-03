@@ -6,6 +6,7 @@ function MultProbView() {
     this.STAT_BOX_SELECTOR = "div.statusbox";
     this.VIC_MSG_SELECTOR = "div.victorymsg";
     this.VICTORY_MSG = "You win! You can do basic math!";
+    this.NO_MEM_NEEDED = "You don't need fancy memory tricks for that cell!"
 
     this.setSelected = function(jqObj, otherSelector) {
         // set jqObj to "selected", removed that class from
@@ -164,6 +165,13 @@ function MultProbView() {
         this.addMessage(this.CHOOSE_WORK_MSG, []);
         $(this.VIC_MSG_SELECTOR).empty();
     };
-    
+
+    this.showPicture = function(pictureNum) {
+        return "You would be shown picture #" + pictureNum;
+    };
+
+    this.showRange = function(lowerVal, upperVal) {
+        return "You would be shown the pictures from " + lowerVal + " to " + upperVal;
+    };
 };
 

@@ -1,5 +1,5 @@
 test( "set problem", function() {
-    var z = new MultProbModel(3);
+    var z = new MultProbModel(3, 3);
     z.setProb(123, 45);
     deepEqual(z.topRow, [3,2,1], z.topRow );
     deepEqual(z.bottomRow, [5,4], z.bottomRow);
@@ -9,7 +9,7 @@ test( "set problem", function() {
 });
 
 test("check math", function() {
-    var z = new MultProbModel(3);
+    var z = new MultProbModel(3, 3);
     var expectedWork = [
         [5,3,6,0,0],
         [0,2,9,3,0]
@@ -34,9 +34,8 @@ test("check math", function() {
 });
 
 test("check final", function() {
-    var z = new MultProbModel(3);
+    var z = new MultProbModel(3, 3);
     z.setProb(123, 45); // 123 * 45 = 5535
-    //z.showNewProblem();
     ok(z.isValidFinal() === false ,"finds wrong");
     z.finalRow = [5,3,5,5,0];
     ok(z.isValidFinal() === true ,"finds correct");
@@ -46,20 +45,21 @@ test("check final", function() {
         ok(z.isValidFinalCell(i) === expectedMatch[i], "digit-wise");
     }
 });
-/*test("add num to working area", function() {
-    var z = new MultProb(3);
-    z.showNewProblem();
-    // test one num addition to work area
-    var expectedProgress = [
-        [0,1,0,0,0,0],
-        [0,0,0,0,0,0],
-        [0,0,0,0,0,0],
+
+test("picture lookup numbers", function() {
+    var z = new MultProbModel(3);
+    z.setProb(123, 45);
+    var expected_mem = [
+        [true, true, true, true, false],
+        [false, true, true, true, true]
     ];
-    $(document).ready(function() {
-        $("td.workitem[posx='0'][posy='1']").click();
-        $(".numchoices td[tabindex='0']").click();
-        //deepEqual(z.progressRows, expectedProgress, "set one value");
-        var actual = $("td.workitem[posx='0'][posy='1']").html();
-        deepEqual(actual, "1", "one appears");
-    });
-});*/
+    var expected_range = [
+        [[0,9],[10,19],[20,29],[30,39],null],
+        [null,[40,49],[50,59],[60,69],[70,79]]
+    ];
+    for (var i=0; i<z.bottomSize; i++) {
+        for (var j=0; j<z.width; j++) {
+            ok(z.is_memorable(i, j) === expected_mem[i][j], "is memorable @ " + i + "," + j);
+        }
+    }
+});

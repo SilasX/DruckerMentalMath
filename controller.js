@@ -40,6 +40,14 @@ function MultProbController(topSize, bottomSize) {
         var pos = $(finalSel).attr("pos");
         if (posx !== undefined) { // if it found a workarea selected
             model.setWorkDigit(posx, posy, chosenNum);
+            // log the picture numbers the user would see
+            if (model.is_memorable(posx, posy)) {
+                var chosenDigit = parseInt(chosenNum,10);
+                var picture_num = model.picture_number_range(posx, posy)[0] + chosenDigit;
+                view.addMessage(view.showPicture(picture_num), []);
+            } else {
+                view.addMessage(view.NO_MEM_NEEDED, []);
+            }
             // add or remove error class
             if (model.isValidWork(posx, posy)) {
                 $(workSel).removeClass(errorStr);
@@ -64,6 +72,22 @@ function MultProbController(topSize, bottomSize) {
         }
     };
 
+    this.getpicsClick = function() {
+        // get selected object
+        var selectionObj = $(".workarea td.selected");
+        if (selectionObj.length !== 0) {
+            var posx = parseInt(selectionObj.attr("posx"), 10);
+            var posy = parseInt(selectionObj.attr("posy"), 10);
+            if (model.is_memorable(posx, posy)) {
+                view.addMessage("This would show picture range " + model.picture_number_range(posx, posy), []);
+            } else {
+                view.addMessage(view.NO_MEM_NEEDED, []);
+            }
+        } else {
+            view.addMessage("You need to pick a cell first before looking up pictures", []);
+        }
+    };
+
     this.debugClick = function() {
         model.setProb(123, 45);
         view.showNewProblem(model);
@@ -76,6 +100,10 @@ function MultProbController(topSize, bottomSize) {
 
         $(".numchoices td").click(function() {
             obj.choiceClick($(this));
+        });
+
+        $("button.getpics").click(function() {
+            obj.getpicsClick();
         });
 
         $("button.debug").click(function() {

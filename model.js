@@ -131,5 +131,30 @@ function MultProbModel(topSize, bottomSize) {
         }
     };
 
+    // methods for picture number lookup
+
+    // whether or not a number in the workspace needs to be memorized
+    this.is_memorable = function(posx, posy) {
+        // don't need to remember 0s, so offset by the number of the row
+        var lower_bound = posx;
+        // has number of memorable spaces quial to top row size + 1
+        var upper_bound = posx + this.topSize;
+        return posy >= lower_bound && posy <= upper_bound;
+    };
+
+    // return [lower, upper] bound of picture numbers
+    this.picture_number_range = function(posx, posy) {
+        // exit with null if outside of range for memorizing
+        if (!this.is_memorable(posx, posy)) {
+            return null;
+        }
+        var rowWidth = this.topSize + 1;
+        // y position out of memorable slots; offset by row #
+        var y_offset = posy - posx;
+        // each row takes up this.width spaces,
+        // and each number 10 spaces
+        lower_pic_num = 10*(y_offset + posx * rowWidth);
+        return [lower_pic_num, lower_pic_num + 9];
+    };
 }
 
