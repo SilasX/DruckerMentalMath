@@ -51,10 +51,8 @@ function MultProbModel(topSize, bottomSize) {
     };
 
     // set a value of a digit in the workspace
-    this.setWorkDigit = function(posxStr, posyStr, val) {
-        var x = parseInt(posxStr, 10);
-        var y = parseInt(posyStr, 10);
-        this.progressRows[x][y] = parseInt(val);
+    this.setWorkDigit = function(posx, posy, val) {
+        this.progressRows[posx][posy] = parseInt(val);
     };
 
     // set array of values for a row in work space

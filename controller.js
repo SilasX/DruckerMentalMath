@@ -1,9 +1,14 @@
+var rebind = function(selector, event_, callback) {
+    $(selector).unbind(event_).bind(event_, callback);
+};
 function MultProbController(topSize, bottomSize) {
 
     var model = new MultProbModel(topSize, bottomSize);
     var view = new MultProbView();
 
     this.resetProblem = function() {
+        model = new MultProbModel(model.topSize, model.bottomSize);
+        view = new MultProbView();
         // set model to some new random problem
         model.randomizeProblem();
         // reset progress in model
@@ -39,6 +44,8 @@ function MultProbController(topSize, bottomSize) {
         var posy = $(workSel).attr("posy");
         var pos = $(finalSel).attr("pos");
         if (posx !== undefined) { // if it found a workarea selected
+            posx = parseInt(posx, 10);
+            posy = parseInt(posy, 10);
             model.setWorkDigit(posx, posy, chosenNum);
             // log the picture numbers the user would see
             if (model.is_memorable(posx, posy)) {
@@ -75,6 +82,7 @@ function MultProbController(topSize, bottomSize) {
     this.getpicsClick = function() {
         // get selected object
         var selectionObj = $(".workarea td.selected");
+        console.log(selectionObj.length);
         if (selectionObj.length !== 0) {
             var posx = parseInt(selectionObj.attr("posx"), 10);
             var posy = parseInt(selectionObj.attr("posy"), 10);
@@ -102,7 +110,8 @@ function MultProbController(topSize, bottomSize) {
             obj.choiceClick($(this));
         });
 
-        $("button.getpics").click(function() {
+        //$("button.getpics").unbind("click").bind("click", function() {
+        rebind("button.getpics", "click", function() {
             obj.getpicsClick();
         });
 
@@ -111,7 +120,8 @@ function MultProbController(topSize, bottomSize) {
             obj.setHandlers(obj);
         });
 
-        $("button.reset").click(function() {
+        //$("button.reset").click(function() {
+        rebind("button.reset", "click", function() {
             obj.resetProblem();
             obj.setHandlers(obj);
         });

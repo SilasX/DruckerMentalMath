@@ -5,16 +5,21 @@ from selenium import webdriver
 
 DEBUG_BUTTON_SELECTOR = "button.debug"
 ERROR_MSG = "Uh oh! One of your digits is wrong!"
+PIC_LOOKUP_SELECTOR = "button.getpics"
 LAST_MSG_SELECTOR = ".statitem:last-child"
+N2LAST_MSG_SELECTOR = ".statitem:nth-last-child(2)"
 VIC_MSG_SELECTOR = "div.victorymsg";
 VICTORY_MSG = "You win! You can do basic math!"
+NO_PIC_NEEDED_MSG = "You don't need fancy memory tricks for that cell!"
 
 
 def num_selector(input_num):
     """helper function for writing selector for input number """
     return "#num" + str(input_num)
 
-
+def work_selector(rowi, coli):
+    """helper for selecting position in work area with row index 'rowi' and column index coli"""
+    return ".workarea td[posx='%d'][posy='%d']" % (rowi, coli)
 class UserInputtingNumbers(unittest.TestCase):
 
     def setUp(self):
@@ -27,7 +32,7 @@ class UserInputtingNumbers(unittest.TestCase):
         driver = self.driver
         self.css(DEBUG_BUTTON_SELECTOR).click()
         # click the buttons to set tens place on 1st row to 2
-        workcell = self.css(".workarea td[posy='1'][posx='0']")
+        workcell = self.css(work_selector(0, 1))
         choicecell = self.css(num_selector(2))
         workcell.click()
         choicecell.click()
@@ -54,7 +59,7 @@ class UserInputtingNumbers(unittest.TestCase):
     def test_input_vals_after_restart(self):
         expected = u'8'
         driver = self.driver
-        workcell = self.css(".workarea td[posy='2'][posx='1']")
+        workcell = self.css(work_selector(1, 2))
         choicecell = self.css(".numchoices td[tabindex='7']")
         workcell.click()
         choicecell.click()
@@ -87,6 +92,27 @@ class UserInputtingNumbers(unittest.TestCase):
             #self.css("td.finalitem[pos='0']").click()
             #self.css(num_selector(9)).click()
             #self.assertEqual(u"", vic_msg_cell.text)
+
+    def test_correct_picture_msg(self):
+        self.css(DEBUG_BUTTON_SELECTOR).click()
+        expected_need = [
+            [True, True, True, True, False],
+            [False, True, True, True, True]
+        ]
+        for rowi in range(2):
+            for coli in range(5):
+                # click that item
+                self.css(work_selector(rowi, coli)).click()
+                # click the pic lookup button
+                self.css(PIC_LOOKUP_SELECTOR).click()
+                last_message = self.css(LAST_MSG_SELECTOR)
+                # if it's in a cell that should need memory help
+                if expected_need[rowi][coli]:
+                    # don't have the no-need message last
+                    self.assertNotEqual(NO_PIC_NEEDED_MSG, last_message.text)
+                else:
+                    # do have the message
+                    self.assertEqual(NO_PIC_NEEDED_MSG, last_message.text)
 
     def tearDown(self):
         self.driver.close()
