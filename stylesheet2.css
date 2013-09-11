@@ -1,0 +1,8 @@
+span.statusbox {
+    overflow: scroll;
+    font-family: arial, sans-serif;
+}
+
+.multprob, .statusbox {
+    height: 150px;
+}
