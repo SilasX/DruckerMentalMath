@@ -25,7 +25,7 @@ class UserInputtingNumbers(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
         self.css = self.driver.find_element_by_css_selector
-        self.driver.get("http://localhost:8000/index.html")
+        self.driver.get("http://localhost:8001/index.html")
 
     def test_indicate_error_vals(self):
         expected = u'2'
