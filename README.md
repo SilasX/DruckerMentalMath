@@ -20,7 +20,13 @@ Clone the repo and open `index.html` in your favorite browser.
 
 This uses a pseudo-MVC design.  `script.js` instantiates a (MultProb)Controller, which uses the `setHandlers` method to listen for events, each of which calls a controller method that then makes appropriate calls to the (MultProb)Model or (MultProb)View. The Model handles internal representaiton of the multiplicaiton problem and the progress on it, while the View writes to the DOM to keep it in sync.
 
-#### Tests
+#### Tests and Development
+
+Set up dependencies for development using virutalenv:
+
+    virtualenv venv
+    . ./venv/bin/activate
+    pip install -r requirements.txt
 
 ##### Model tests (unit tests)
 The test suite can be run simply by opening `test/qunit.html`, which uses the [QUnit](http://qunitjs.com/) testing framework.

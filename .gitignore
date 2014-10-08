@@ -3,3 +3,4 @@
 *.pyo
 deploy.sh
 *.DS_Store
+venv
